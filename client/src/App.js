@@ -19,7 +19,7 @@ function App() {
 
   const fetchEntries = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/sources`);
+      const res = await fetch(`survey-backend-g4gc.onrender.com/api/sources`);
       const data = await res.json();
       setEntries(data);
     } catch (err) {
