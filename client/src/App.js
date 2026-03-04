@@ -11,7 +11,7 @@ import {
 import './App.css';
 
 // Get API URL from environment variable or default to local development
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'https://survey-backend-g4gc.onrender.com';
 
 function App() {
   const [source, setSource] = useState('');
