@@ -29,7 +29,7 @@ app.post('/api/sources', async (req, res) => {
   }
 });
 
-app.get('survey-bac.comkend-g4gc.onrender/api/sources', async (req, res) => {
+app.get('/api/sources', async (req, res) => {
   try {
     const entries = await CustomerSource.find().sort({ createdAt: -1 });
     res.json(entries);
