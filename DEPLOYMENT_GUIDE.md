@@ -95,8 +95,16 @@ NODE_ENV=production
 
 ## Important Notes
 
+### Cold Start Prevention (NEW!)
+The backend now includes automatic cold start prevention:
+
+- A health check endpoint (`/health`) is available
+- **On Render**: A cron job runs every 5 minutes to ping the server, keeping it warm
+- **Setup**: The `node-cron` package handles this automatically when deployed to Render
+- **Result**: Your server won't spin down, eliminating 30-second cold start delays
+
 ### Free Tier Limitations:
-- **Render**: Free tier spins down after 15 minutes of inactivity (first request takes ~30 seconds)
+- **Render**: Free tier spins down after 15 minutes of inactivity ✅ MITIGATED BY CRON JOB
 - **MongoDB Atlas**: 512 MB storage (plenty for a survey app)
 - **Vercel**: Unlimited deployments, but limited build minutes per month
 

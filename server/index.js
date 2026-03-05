@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const cron = require('node-cron');
+const https = require('https');
 require('dotenv').config();
 
 const app = express();
@@ -17,6 +19,25 @@ mongoose.connect(mongoUri) // just this line, no options needed with Mongoose 6+
   console.log(process.env.MONGO_URI);
 
 // endpoints
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date() });
+});
+
+// Cron job to prevent cold starts - pings server every 5 minutes
+if (process.env.RENDER_EXTERNAL_URL) {
+  const keepAliveUrl = process.env.RENDER_EXTERNAL_URL;
+  
+  cron.schedule('*/5 * * * *', () => {
+    https.get(`${keepAliveUrl}/health`, (res) => {
+      console.log(`Keep-alive ping at ${new Date().toISOString()} - Status: ${res.statusCode}`);
+    }).on('error', (err) => {
+      console.error('Keep-alive ping failed:', err.message);
+    });
+  });
+  
+  console.log('Cold start prevention enabled: Server will ping itself every 5 minutes');
+}
+
 app.post('/api/sources', async (req, res) => {
   try {
     const { source } = req.body;
